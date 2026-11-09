@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from . import models, database, schemas
 app = FastAPI()
@@ -18,3 +18,13 @@ def create_trades(trade: schemas.TradeCreate ,db: Session = Depends(database.get
     db.commit()
     db.refresh(db_trade)
     return db_trade
+
+@app.get("/trades/{trade_id}",response_model=schemas.Trade)
+def get_trade_id(trade_id: int, db: Session = Depends(database.get_db)):
+    trade = db.query(models.Trade).filter(models.Trade.id == trade_id).first()
+
+    if not trade:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                            detail=f"Trade with id {trade_id} not found")
+
+    return trade
