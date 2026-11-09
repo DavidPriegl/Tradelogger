@@ -11,3 +11,10 @@ def read_root():
 def get_trades(db: Session = Depends(database.get_db)):
     return db.query(models.Trade).order_by(models.Trade.trade_date.desc()).all()
 
+@app.post("/trades", response_model=schemas.TradeCreate)
+def create_trades(trade: schemas.TradeCreate ,db: Session = Depends(database.get_db)):
+    db_trade = models.Trade(**trade.model_dump())
+    db.add(db_trade)
+    db.commit()
+    db.refresh(db_trade)
+    return db_trade
