@@ -1,6 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException, status
+from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 from . import models, database, schemas
+
+
 app = FastAPI()
 
 @app.get("/")
@@ -28,3 +31,9 @@ def get_trade_id(trade_id: int, db: Session = Depends(database.get_db)):
                             detail=f"Trade with id {trade_id} not found")
 
     return trade
+
+@app.get("/portfolio", response_model=list[schemas.Portfolio])
+def get_portfolio(db: Session = Depends(database.get_db)):
+    portfolio = db.query(models.Trade.symbol, func.sum(case((models.Trade.trade_type == "BUY", models.Trade.quantity), else_=-models.Trade.quantity)).label("total_quantity")).group_by(models.Trade.symbol).all()
+
+    return portfolio

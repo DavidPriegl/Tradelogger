@@ -17,3 +17,8 @@ class Trade(TradeBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+class Portfolio(BaseModel):
+    symbol: str
+    total_quantity: float
+
+    model_config = ConfigDict(from_attributes=True)
