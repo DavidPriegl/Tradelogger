@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "frontend",
+    "slug": "frontend",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "",
+        "backgroundImage": "",
+        "monochromeImage": ""
+      }
+    },
+    "web": {
+      "favicon": ""
+    }
+  }
+}
